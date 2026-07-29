@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SERI-BEST 2026 — Registration | CSB-CMER&TI</title>
+<style>
+  :root{
+    --bg-1:#eef2fc;
+    --bg-2:#f7f9ff;
+    --bg-3:#e7ecfb;
+    --surface:rgba(255,255,255,0.62);
+    --surface-solid:#ffffff;
+    --ink:#1c2340;
+    --ink-soft:#5c6488;
+    --ink-faint:#8890ac;
+    --line:rgba(93,109,170,0.16);
+    --blue:#4361ee;
+    --blue-deep:#2f3fb0;
+    --violet:#7b6ffb;
+    --mint:#2bc4b0;
+    --sky:#5aa9ff;
+    --error:#c23b4a;
+    --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --font-body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.55;
+    background:
+      radial-gradient(ellipse 900px 600px at 15% -10%, #dbe4fc 0%, transparent 60%),
+      radial-gradient(ellipse 800px 700px at 110% 10%, #e3f0ee 0%, transparent 55%),
+      linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%);
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+
+  /* ================= STARFIELD / DOT GRID ================= */
+  .dotfield{
+    position:absolute; inset:0;
+    background-image: radial-gradient(rgba(93,109,170,0.28) 1px, transparent 1px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 20%, transparent 75%);
+    pointer-events:none;
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    padding:100px 24px 190px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .orb{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(50px);
+    opacity:0.55;
+    pointer-events:none;
+    animation: float 14s ease-in-out infinite;
+  }
+  .orb-1{ width:340px; height:340px; top:-90px; left:-80px; background:radial-gradient(circle, var(--sky), transparent 70%); animation-delay:0s;}
+  .orb-2{ width:280px; height:280px; top:40px; right:-60px; background:radial-gradient(circle, var(--violet), transparent 70%); animation-delay:2.4s;}
+  .orb-3{ width:220px; height:220px; bottom:-40px; left:38%; background:radial-gradient(circle, var(--mint), transparent 70%); animation-delay:4.8s;}
+  @keyframes float{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(18px,-24px) scale(1.06); }
+  }
+
+  .orbit-badge{
+    width:150px;height:150px;
+    margin:0 auto 30px;
+    position:relative;
+    perspective:600px;
+  }
+  .orbit-ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    background:
+      conic-gradient(from 0deg, var(--blue), var(--violet), var(--mint), var(--sky), var(--blue));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    animation: spin 9s linear infinite;
+    transform-style:preserve-3d;
+  }
+  .orbit-ring.r2{
+    inset:16px;
+    opacity:0.55;
+    animation: spin 13s linear infinite reverse;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .orbit-core{
+    position:absolute; inset:34px;
+    border-radius:50%;
+    background:var(--surface-solid);
+    box-shadow:
+      0 18px 40px -12px rgba(67,97,238,0.35),
+      inset 0 0 0 1px var(--line);
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;
+  }
+  .orbit-core b{
+    font-family:var(--font-display);
+    font-size:14px;
+    color:var(--blue-deep);
+    letter-spacing:0.5px;
+    line-height:1.15;
+    text-align:center;
+  }
+
+  .eyebrow{
+    letter-spacing:3px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--violet);
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(40px,6vw,66px);
+    line-height:1.03;
+    margin:0 0 14px;
+    background:linear-gradient(100deg, var(--ink) 20%, var(--blue-deep) 55%, var(--violet) 85%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero .tagline{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:clamp(16px,2vw,20px);
+    color:var(--ink-soft);
+    max-width:560px;
+    margin:0 auto 26px;
+  }
+  .hero .org{
+    font-size:14px;
+    color:var(--ink-faint);
+    max-width:520px;
+    margin:0 auto;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    justify-content:center;
+    margin-top:38px;
+    position:relative;
+    z-index:2;
+  }
+  .meta-chip{
+    border:1px solid var(--line);
+    background:var(--surface);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    padding:11px 20px;
+    border-radius:100px;
+    font-size:12.5px;
+    letter-spacing:0.3px;
+    color:var(--ink-soft);
+    box-shadow:0 10px 30px -18px rgba(67,97,238,0.4);
+  }
+  .meta-chip strong{ color:var(--blue-deep); font-weight:700; }
+
+  /* ================= WRAP / SECTIONS ================= */
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px;
+    position:relative;
+    z-index:2;
+  }
+
+  .deadline-strip{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:-150px;
+    margin-bottom:56px;
+  }
+  .deadline-cell{
+    background:var(--surface);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 20px;
+    text-align:center;
+    box-shadow:0 24px 50px -28px rgba(67,97,238,0.45);
+  }
+  .deadline-cell .label{
+    font-size:10.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:8px;
+  }
+  .deadline-cell .date{
+    font-family:var(--font-display);
+    font-size:23px;
+    background:linear-gradient(100deg, var(--blue-deep), var(--violet));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  @media (max-width:520px){ .deadline-strip{grid-template-columns:1fr;} }
+
+  .section-head{
+    text-align:center;
+    margin-bottom:36px;
+  }
+  .section-head .kicker{
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:2.6px;
+    color:var(--mint);
+    text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-size:clamp(26px,3.4vw,34px);
+    margin:0;
+    color:var(--ink);
+  }
+
+  /* ================= FORM CARD (3D tilt) ================= */
+  .tilt-wrap{ perspective:1400px; margin-bottom:70px; }
+  .card{
+    background:var(--surface);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:42px clamp(20px,4vw,50px) 46px;
+    box-shadow:
+      0 40px 80px -40px rgba(67,97,238,0.35),
+      0 2px 0 rgba(255,255,255,0.6) inset;
+    transform-style:preserve-3d;
+    transition:transform .12s ease-out;
+    will-change:transform;
+  }
+
+  .field{ margin-bottom:24px; }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:7px;
+  }
+  .field .hint{
+    font-size:12px;
+    color:var(--ink-faint);
+    margin-top:5px;
+  }
+  .req{ color:var(--error); }
+  input[type=text], input[type=email], input[type=tel], select, textarea{
+    width:100%;
+    padding:12px 14px;
+    font-size:15px;
+    font-family:var(--font-body);
+    border:1px solid var(--line);
+    background:rgba(255,255,255,0.75);
+    color:var(--ink);
+    border-radius:10px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  textarea{ resize:vertical; min-height:88px; }
+  input:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--blue);
+    box-shadow:0 0 0 4px rgba(67,97,238,0.14);
+  }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:560px){ .row2{ grid-template-columns:1fr; } }
+
+  fieldset{
+    border:1px solid var(--line);
+    padding:16px 18px;
+    border-radius:12px;
+  }
+  fieldset legend{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink);
+    padding:0 6px;
+  }
+  .radio-row{ display:flex; gap:22px; flex-wrap:wrap; margin-top:4px; }
+  .radio-row label{
+    font-size:14.5px; font-weight:400;
+    display:flex; align-items:center; gap:7px;
+    color:var(--ink); cursor:pointer;
+  }
+  input[type=radio], input[type=checkbox]{ accent-color:var(--blue); width:16px; height:16px; }
+
+  .abstract-field{ display:none; }
+
+  .submit-btn{
+    width:100%;
+    padding:16px;
+    background:linear-gradient(100deg, var(--blue) 0%, var(--violet) 100%);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:15.5px;
+    font-weight:700;
+    letter-spacing:0.3px;
+    cursor:pointer;
+    margin-top:8px;
+    box-shadow:0 18px 34px -14px rgba(67,97,238,0.55);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .submit-btn:hover{ transform:translateY(-2px); box-shadow:0 22px 40px -14px rgba(67,97,238,0.65); }
+  .submit-btn:disabled{ background:#aab2cc; cursor:not-allowed; box-shadow:none; }
+
+  .status-msg{
+    margin-top:16px;
+    padding:14px 16px;
+    font-size:14px;
+    display:none;
+    border-radius:10px;
+  }
+  .status-msg.ok{ display:block; background:rgba(43,196,176,0.12); color:#166a5c; border:1px solid var(--mint); }
+  .status-msg.err{ display:block; background:rgba(194,59,74,0.1); color:var(--error); border:1px solid var(--error); }
+
+  footer{
+    text-align:center;
+    padding:40px 24px 60px;
+    color:var(--ink-faint);
+    font-size:13px;
+    position:relative; z-index:2;
+  }
+  footer .contact{ margin-top:6px; color:var(--blue-deep); font-weight:600; }
+
+  @media (prefers-reduced-motion: reduce){
+    .orb, .orbit-ring{ animation:none !important; }
+    .card{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="dotfield"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="orbit-badge">
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring r2"></div>
+    <div class="orbit-core"><b>SERI-BEST<br>2026</b></div>
+  </div>
+
+  <div class="eyebrow">National Meet · Hybrid Mode</div>
+  <h1>Registration</h1>
+  <p class="tagline">Advancing Opportunities for Value Addition, Innovation and Entrepreneurship</p>
+  <p class="org">Organized by CSB – Central Muga Eri Research &amp; Training Institute (CMER&amp;TI), Lahdoigarh, Jorhat, Assam – 785700</p>
+
+  <div class="hero-meta">
+    <div class="meta-chip">📅 Meet Date · <strong>04 November 2026</strong></div>
+    <div class="meta-chip">📝 Abstract Deadline · <strong>30 August 2026</strong></div>
+    <div class="meta-chip">📍 <strong>CMER&amp;TI, Lahdoigarh, Jorhat, Assam</strong></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="deadline-strip">
+    <div class="deadline-cell">
+      <div class="label">Abstract Submission Closes</div>
+      <div class="date">30 Aug 2026</div>
+    </div>
+    <div class="deadline-cell">
+      <div class="label">SERI-BEST 2026 Meet</div>
+      <div class="date">04 Nov 2026</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="kicker">Delegate Registration</div>
+    <h2>Reserve your place</h2>
+  </div>
+
+  <div class="tilt-wrap">
+    <form class="card" id="regForm">
+
+      <div class="field">
+        <label for="fullName">Full Name <span class="req">*</span></label>
+        <input type="text" id="fullName" name="Full Name" required>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="email">Email <span class="req">*</span></label>
+          <input type="email" id="email" name="Email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone / WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="phone" name="Phone" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="org">Organization / Institution <span class="req">*</span></label>
+        <input type="text" id="org" name="Organization" required>
+      </div>
+
+      <div class="field">
+        <label for="designation">Designation</label>
+        <input type="text" id="designation" name="Designation" placeholder="e.g. Scientist-B, Research Scholar, Proprietor">
+      </div>
+
+      <div class="field">
+        <fieldset>
+          <legend>Category <span class="req">*</span></legend>
+          <div class="radio-row">
+            <label><input type="radio" name="Category" value="Scientist / Researcher" required> Scientist / Researcher</label>
+            <label><input type="radio" name="Category" value="Student / Research Scholar"> Student / Research Scholar</label>
+            <label><input type="radio" name="Category" value="Industry / Entrepreneur / Start-up"> Industry / Entrepreneur / Start-up</label>
+            <label><input type="radio" name="Category" value="Farmer / FPO Representative"> Farmer / FPO Representative</label>
+            <label><input type="radio" name="Category" value="Other"> Other</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="field">
+        <fieldset>
+          <legend>Mode of Participation <span class="req">*</span></legend>
+          <div class="radio-row">
+            <label><input type="radio" name="Mode" value="In-person" required> In-person</label>
+            <label><input type="radio" name="Mode" value="Online" required> Online</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="field">
+        <fieldset>
+          <legend>Abstract Submission</legend>
+          <div class="radio-row">
+            <label><input type="radio" name="Abstract" value="Yes" onclick="toggleAbstract(true)"> Yes, I wish to submit an abstract</label>
+            <label><input type="radio" name="Abstract" value="No" onclick="toggleAbstract(false)" checked> No</label>
+          </div>
+          <p class="hint">Abstracts must be submitted on or before <strong>30 August 2026</strong> under one of the four SERI-BEST 2026 themes.</p>
+        </fieldset>
+      </div>
+
+      <div class="field abstract-field" id="abstractTitleField">
+        <label for="abstractTitle">Proposed Abstract Title</label>
+        <input type="text" id="abstractTitle" name="Abstract Title">
+      </div>
+
+      <div class="field abstract-field" id="abstractTextField">
+        <label for="abstractText">Abstract</label>
+        <textarea id="abstractText" name="Abstract Text" placeholder="Paste or type your abstract (max ~300 words)"></textarea>
+        <p class="hint">Structured abstracts (Background, Methods, Results, Conclusion) are encouraged but not mandatory.</p>
+      </div>
+
+      <div class="field">
+        <label for="theme">Theme of Interest</label>
+        <select id="theme" name="Theme of Interest">
+          <option value="">Select a theme (optional)</option>
+          <option>Food, Feed and Nutraceutical Applications of Eri, Muga and Tasar By-products</option>
+          <option>Value Addition and Enterprise Opportunities in Mulberry Sericulture By-products</option>
+          <option>Sustainable Utilization and Commercial Potential of Sericulture By-products</option>
+          <option>Innovative Healthcare, Industrial and Non-Textile Applications</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="remarks">Remarks / Dietary or Accessibility Needs</label>
+        <textarea id="remarks" name="Remarks"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Registration</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div>SERI-BEST 2026 · National Meet on Sericultural By-products for Entrepreneurship &amp; Sustainable Technologies</div>
+  <div class="contact">cmerti@rediffmail.com &nbsp;·&nbsp; +91-3762305900</div>
+</footer>
+
+<script>
+  // ===== CONFIGURATION =====
+  const SUBMIT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  function toggleAbstract(show){
+    document.querySelectorAll('.abstract-field').forEach(el => {
+      el.style.display = show ? 'block' : 'none';
+    });
+  }
+
+  const form = document.getElementById('regForm');
+  const btn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    statusMsg.className = 'status-msg';
+    statusMsg.textContent = '';
+
+    if (SUBMIT_URL.indexOf('PASTE_YOUR') === 0) {
+      statusMsg.className = 'status-msg err';
+      statusMsg.textContent = 'Form is not yet connected to the Google Sheet. See SETUP_INSTRUCTIONS.md to finish setup.';
+      return;
+    }
+
+    const data = new FormData(form);
+    const payload = {};
+    data.forEach((value, key) => { payload[key] = value; });
+    payload['Submitted At'] = new Date().toISOString();
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    fetch(SUBMIT_URL, { method: 'POST', body: JSON.stringify(payload) })
+      .then(res => res.json())
+      .then(res => {
+        if (res.result === 'success') {
+          statusMsg.className = 'status-msg ok';
+          statusMsg.textContent = 'Thank you — your registration has been recorded. A confirmation will follow by email.';
+          form.reset();
+          toggleAbstract(false);
+        } else {
+          throw new Error(res.error || 'Unknown error');
+        }
+      })
+      .catch(err => {
+        statusMsg.className = 'status-msg err';
+        statusMsg.textContent = 'Submission failed. Please try again or email cmerti@rediffmail.com directly. (' + err.message + ')';
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Submit Registration';
+      });
+  });
+
+  // ---- subtle 3D tilt on the form card, following the cursor ----
+  const tiltWrap = document.querySelector('.tilt-wrap');
+  const card = document.querySelector('.card');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches === false && window.matchMedia('(hover: hover)').matches) {
+    tiltWrap.addEventListener('mousemove', (e) => {
+      const rect = tiltWrap.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `rotateY(${x * 4}deg) rotateX(${ -y * 4}deg)`;
+    });
+    tiltWrap.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+</script>
+
+</body>
+</html>
