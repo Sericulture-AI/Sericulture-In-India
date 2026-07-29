@@ -180,8 +180,8 @@
 
   .deadline-strip{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
     margin-top:-150px;
     margin-bottom:56px;
   }
@@ -191,26 +191,28 @@
     -webkit-backdrop-filter:blur(18px);
     border:1px solid var(--line);
     border-radius:16px;
-    padding:24px 20px;
+    padding:20px 14px;
     text-align:center;
     box-shadow:0 24px 50px -28px rgba(67,97,238,0.45);
   }
   .deadline-cell .label{
-    font-size:10.5px;
-    letter-spacing:2px;
+    font-size:9.5px;
+    letter-spacing:1.4px;
     text-transform:uppercase;
     color:var(--ink-faint);
     margin-bottom:8px;
+    line-height:1.3;
   }
   .deadline-cell .date{
     font-family:var(--font-display);
-    font-size:23px;
+    font-size:19px;
     background:linear-gradient(100deg, var(--blue-deep), var(--violet));
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
   }
-  @media (max-width:520px){ .deadline-strip{grid-template-columns:1fr;} }
+  @media (max-width:680px){ .deadline-strip{grid-template-columns:1fr 1fr;} }
+  @media (max-width:420px){ .deadline-strip{grid-template-columns:1fr;} }
 
   .section-head{
     text-align:center;
@@ -357,7 +359,9 @@
   <div class="orbit-badge">
     <div class="orbit-ring"></div>
     <div class="orbit-ring r2"></div>
-    <div class="orbit-core"><b>SERI-BEST<br>2026</b></div>
+    <div class="orbit-core">
+      <img src="https://raw.githubusercontent.com/Sericulture-AI/Sericulture-In-India/main/ChatGPT%20Image%20Jul%2023%2C%202026%2C%2010_21_17%20AM11.png" alt="SERI-BEST 2026 logo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+    </div>
   </div>
 
   <div class="eyebrow">National Meet · Hybrid Mode</div>
@@ -368,6 +372,8 @@
   <div class="hero-meta">
     <div class="meta-chip">📅 Meet Date · <strong>04 November 2026</strong></div>
     <div class="meta-chip">📝 Abstract Deadline · <strong>30 August 2026</strong></div>
+    <div class="meta-chip">✅ Decision Notified · <strong>30 September 2026</strong></div>
+    <div class="meta-chip">📄 Full Paper Deadline · <strong>30 October 2026</strong></div>
     <div class="meta-chip">📍 <strong>CMER&amp;TI, Lahdoigarh, Jorhat, Assam</strong></div>
   </div>
 </section>
@@ -377,6 +383,14 @@
     <div class="deadline-cell">
       <div class="label">Abstract Submission Closes</div>
       <div class="date">30 Aug 2026</div>
+    </div>
+    <div class="deadline-cell">
+      <div class="label">Decision Notified</div>
+      <div class="date">30 Sep 2026</div>
+    </div>
+    <div class="deadline-cell">
+      <div class="label">Full Paper Deadline (3 pages)</div>
+      <div class="date">30 Oct 2026</div>
     </div>
     <div class="deadline-cell">
       <div class="label">SERI-BEST 2026 Meet</div>
@@ -460,7 +474,7 @@
       <div class="field abstract-field" id="abstractTextField">
         <label for="abstractText">Abstract</label>
         <textarea id="abstractText" name="Abstract Text" placeholder="Paste or type your abstract (max ~300 words)"></textarea>
-        <p class="hint">Structured abstracts (Background, Methods, Results, Conclusion) are encouraged but not mandatory.</p>
+        <p class="hint">Structured abstracts (Background, Methods, Results, Conclusion) are encouraged but not mandatory. If selected, decision will be notified by <strong>30 September 2026</strong>, and the full paper (3 pages only) must be submitted by <strong>30 October 2026</strong>.</p>
       </div>
 
       <div class="field">
@@ -494,7 +508,7 @@
 
 <script>
   // ===== CONFIGURATION =====
-  const SUBMIT_URL = const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbzl2IzpIIf4zWBdT-txvUDxxPevoiu23sNBF5CcTRdu9aS27VC7sAcm2vfHfPNIKcio/exec";
+  const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbzl2IzpIIf4zWBdT-txvUDxxPevoiu23sNBF5CcTRdu9aS27VC7sAcm2vfHfPNIKcio/exec";
 
   function toggleAbstract(show){
     document.querySelectorAll('.abstract-field').forEach(el => {
@@ -508,6 +522,15 @@
   const hiddenFrame = document.getElementById('hidden_iframe');
   let awaitingResponse = false;
 
+  // ---- Auto-close registration after 30 August 2026 (end of day, IST) ----
+  const REGISTRATION_CUTOFF = new Date('2026-08-30T23:59:59+05:30');
+  if (new Date() > REGISTRATION_CUTOFF) {
+    btn.disabled = true;
+    btn.textContent = 'Registration Closed';
+    statusMsg.className = 'status-msg err';
+    statusMsg.textContent = 'Registration closed on 30 August 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
+  }
+
   if (SUBMIT_URL.indexOf('PASTE_YOUR') !== 0) {
     form.action = SUBMIT_URL;
     form.target = 'hidden_iframe';
@@ -517,6 +540,13 @@
   form.addEventListener('submit', function(e){
     statusMsg.className = 'status-msg';
     statusMsg.textContent = '';
+
+    if (new Date() > REGISTRATION_CUTOFF) {
+      e.preventDefault();
+      statusMsg.className = 'status-msg err';
+      statusMsg.textContent = 'Registration closed on 30 August 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
+      return;
+    }
 
     if (SUBMIT_URL.indexOf('PASTE_YOUR') === 0) {
       e.preventDefault();
