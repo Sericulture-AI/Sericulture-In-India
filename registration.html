@@ -485,6 +485,8 @@
   </div>
 </div>
 
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 <footer>
   <div>SERI-BEST 2026 · National Meet on Sericultural By-products for Entrepreneurship &amp; Sustainable Technologies</div>
   <div class="contact">cmerti@rediffmail.com &nbsp;·&nbsp; +91-3762305900</div>
@@ -492,7 +494,7 @@
 
 <script>
   // ===== CONFIGURATION =====
-  const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbzq-Ma_b_D1qyUHtJ_b-xwIhPFPItq0qSC-k_jXgJwkIT2Ej3aeItHpveXmnbUrabM1Xg/exec";
+  const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbzl2IzpIIf4zWBdT-txvUDxxPevoiu23sNBF5CcTRdu9aS27VC7sAcm2vfHfPNIKcio/exec";
 
   function toggleAbstract(show){
     document.querySelectorAll('.abstract-field').forEach(el => {
@@ -503,46 +505,43 @@
   const form = document.getElementById('regForm');
   const btn = document.getElementById('submitBtn');
   const statusMsg = document.getElementById('statusMsg');
+  const hiddenFrame = document.getElementById('hidden_iframe');
+  let awaitingResponse = false;
+
+  if (SUBMIT_URL.indexOf('PASTE_YOUR') !== 0) {
+    form.action = SUBMIT_URL;
+    form.target = 'hidden_iframe';
+    form.method = 'POST';
+  }
 
   form.addEventListener('submit', function(e){
-    e.preventDefault();
     statusMsg.className = 'status-msg';
     statusMsg.textContent = '';
 
     if (SUBMIT_URL.indexOf('PASTE_YOUR') === 0) {
+      e.preventDefault();
       statusMsg.className = 'status-msg err';
       statusMsg.textContent = 'Form is not yet connected to the Google Sheet. See SETUP_INSTRUCTIONS.md to finish setup.';
       return;
     }
 
-    const data = new FormData(form);
-    const payload = {};
-    data.forEach((value, key) => { payload[key] = value; });
-    payload['Submitted At'] = new Date().toISOString();
-
+    // Native form submission to the hidden iframe — not subject to
+    // browser CORS restrictions, unlike fetch(). Let the browser submit
+    // this normally (no preventDefault).
+    awaitingResponse = true;
     btn.disabled = true;
     btn.textContent = 'Submitting...';
+  });
 
-    fetch(SUBMIT_URL, { method: 'POST', body: JSON.stringify(payload) })
-      .then(res => res.json())
-      .then(res => {
-        if (res.result === 'success') {
-          statusMsg.className = 'status-msg ok';
-          statusMsg.textContent = 'Thank you — your registration has been recorded. A confirmation will follow by email.';
-          form.reset();
-          toggleAbstract(false);
-        } else {
-          throw new Error(res.error || 'Unknown error');
-        }
-      })
-      .catch(err => {
-        statusMsg.className = 'status-msg err';
-        statusMsg.textContent = 'Submission failed. Please try again or email cmerti@rediffmail.com directly. (' + err.message + ')';
-      })
-      .finally(() => {
-        btn.disabled = false;
-        btn.textContent = 'Submit Registration';
-      });
+  hiddenFrame.addEventListener('load', function(){
+    if (!awaitingResponse) return; // ignore the initial blank load on page open
+    awaitingResponse = false;
+    statusMsg.className = 'status-msg ok';
+    statusMsg.textContent = 'Thank you — your registration has been recorded. A confirmation will follow by email.';
+    form.reset();
+    toggleAbstract(false);
+    btn.disabled = false;
+    btn.textContent = 'Submit Registration';
   });
 
   // ---- subtle 3D tilt on the form card, following the cursor ----
