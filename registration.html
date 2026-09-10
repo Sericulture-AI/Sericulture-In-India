@@ -168,6 +168,7 @@
     box-shadow:0 10px 30px -18px rgba(67,97,238,0.4);
   }
   .meta-chip strong{ color:var(--blue-deep); font-weight:700; }
+  a.meta-chip, a.deadline-cell{ text-decoration:none; }
 
   /* ================= WRAP / SECTIONS ================= */
   .wrap{
@@ -180,7 +181,7 @@
 
   .deadline-strip{
     display:grid;
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns:repeat(2, 1fr);
     gap:14px;
     margin-top:-150px;
     margin-bottom:56px;
@@ -303,8 +304,6 @@
   }
   input[type=radio], input[type=checkbox]{ accent-color:var(--blue); width:16px; height:16px; }
 
-  .abstract-field{ display:none; }
-
   .submit-btn{
     width:100%;
     padding:16px;
@@ -371,31 +370,21 @@
 
   <div class="hero-meta">
     <div class="meta-chip">📅 Meet Date · <strong>04 November 2026</strong></div>
-    <div class="meta-chip">📝 Abstract Deadline · <strong>30 August 2026</strong></div>
-    <div class="meta-chip">✅ Decision Notified · <strong>30 September 2026</strong></div>
-    <div class="meta-chip">📄 Full Paper Deadline · <strong>30 October 2026</strong></div>
     <div class="meta-chip">📍 <strong>CMER&amp;TI, Lahdoigarh, Jorhat, Assam</strong></div>
+    <a class="meta-chip" href="https://github.com/Sericulture-AI/Sericulture-In-India/blob/main/byproduct_meet.pdf" target="_blank" rel="noopener">📄 <strong>Brochure (PDF)</strong></a>
   </div>
 </section>
 
 <div class="wrap">
   <div class="deadline-strip">
     <div class="deadline-cell">
-      <div class="label">Abstract Submission Closes</div>
-      <div class="date">30 Aug 2026</div>
-    </div>
-    <div class="deadline-cell">
-      <div class="label">Decision Notified</div>
-      <div class="date">30 Sep 2026</div>
-    </div>
-    <div class="deadline-cell">
-      <div class="label">Full Paper Deadline (3 pages)</div>
-      <div class="date">30 Oct 2026</div>
-    </div>
-    <div class="deadline-cell">
       <div class="label">SERI-BEST 2026 Meet</div>
       <div class="date">04 Nov 2026</div>
     </div>
+    <a class="deadline-cell" href="https://github.com/Sericulture-AI/Sericulture-In-India/blob/main/byproduct_meet.pdf" target="_blank" rel="noopener">
+      <div class="label">Event Brochure</div>
+      <div class="date">View PDF</div>
+    </a>
   </div>
 
   <div class="section-head">
@@ -456,28 +445,6 @@
       </div>
 
       <div class="field">
-        <fieldset>
-          <legend>Abstract Submission</legend>
-          <div class="radio-row">
-            <label><input type="radio" name="Abstract" value="Yes" onclick="toggleAbstract(true)"> Yes, I wish to submit an abstract</label>
-            <label><input type="radio" name="Abstract" value="No" onclick="toggleAbstract(false)" checked> No</label>
-          </div>
-          <p class="hint">Abstracts must be submitted on or before <strong>30 August 2026</strong> under one of the four SERI-BEST 2026 themes.</p>
-        </fieldset>
-      </div>
-
-      <div class="field abstract-field" id="abstractTitleField">
-        <label for="abstractTitle">Proposed Abstract Title</label>
-        <input type="text" id="abstractTitle" name="Abstract Title">
-      </div>
-
-      <div class="field abstract-field" id="abstractTextField">
-        <label for="abstractText">Abstract</label>
-        <textarea id="abstractText" name="Abstract Text" placeholder="Paste or type your abstract (max ~300 words)"></textarea>
-        <p class="hint">Structured abstracts (Background, Methods, Results, Conclusion) are encouraged but not mandatory. If selected, decision will be notified by <strong>30 September 2026</strong>, and the full paper (3 pages only) must be submitted by <strong>30 October 2026</strong>.</p>
-      </div>
-
-      <div class="field">
         <label for="theme">Theme of Interest</label>
         <select id="theme" name="Theme of Interest">
           <option value="">Select a theme (optional)</option>
@@ -510,26 +477,11 @@
   // ===== CONFIGURATION =====
   const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbzl2IzpIIf4zWBdT-txvUDxxPevoiu23sNBF5CcTRdu9aS27VC7sAcm2vfHfPNIKcio/exec";
 
-  function toggleAbstract(show){
-    document.querySelectorAll('.abstract-field').forEach(el => {
-      el.style.display = show ? 'block' : 'none';
-    });
-  }
-
   const form = document.getElementById('regForm');
   const btn = document.getElementById('submitBtn');
   const statusMsg = document.getElementById('statusMsg');
   const hiddenFrame = document.getElementById('hidden_iframe');
   let awaitingResponse = false;
-
-  // ---- Auto-close registration after 30 August 2026 (end of day, IST) ----
-  const REGISTRATION_CUTOFF = new Date('2026-08-30T23:59:59+05:30');
-  if (new Date() > REGISTRATION_CUTOFF) {
-    btn.disabled = true;
-    btn.textContent = 'Registration Closed';
-    statusMsg.className = 'status-msg err';
-    statusMsg.textContent = 'Registration closed on 30 August 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
-  }
 
   if (SUBMIT_URL.indexOf('PASTE_YOUR') !== 0) {
     form.action = SUBMIT_URL;
@@ -540,13 +492,6 @@
   form.addEventListener('submit', function(e){
     statusMsg.className = 'status-msg';
     statusMsg.textContent = '';
-
-    if (new Date() > REGISTRATION_CUTOFF) {
-      e.preventDefault();
-      statusMsg.className = 'status-msg err';
-      statusMsg.textContent = 'Registration closed on 30 August 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
-      return;
-    }
 
     if (SUBMIT_URL.indexOf('PASTE_YOUR') === 0) {
       e.preventDefault();
@@ -569,7 +514,6 @@
     statusMsg.className = 'status-msg ok';
     statusMsg.textContent = 'Thank you — your registration has been recorded. A confirmation will follow by email.';
     form.reset();
-    toggleAbstract(false);
     btn.disabled = false;
     btn.textContent = 'Submit Registration';
   });
