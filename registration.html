@@ -181,7 +181,7 @@
 
   .deadline-strip{
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns:repeat(3, 1fr);
     gap:14px;
     margin-top:-150px;
     margin-bottom:56px;
@@ -370,18 +370,23 @@
 
   <div class="hero-meta">
     <div class="meta-chip">📅 Meet Date · <strong>04 November 2026</strong></div>
+    <div class="meta-chip">📝 Registration Closes · <strong>10 October 2026</strong></div>
     <div class="meta-chip">📍 <strong>CMER&amp;TI, Lahdoigarh, Jorhat, Assam</strong></div>
-    <a class="meta-chip" href="https://github.com/Sericulture-AI/Sericulture-In-India/blob/main/byproduct_meet.pdf" target="_blank" rel="noopener">📄 <strong>Brochure (PDF)</strong></a>
+    <a class="meta-chip" href="https://cdn.jsdelivr.net/gh/Sericulture-AI/Sericulture-In-India@main/byproduct_meet.pdf" target="_blank" rel="noopener">📄 <strong>Brochure (PDF)</strong></a>
   </div>
 </section>
 
 <div class="wrap">
   <div class="deadline-strip">
     <div class="deadline-cell">
+      <div class="label">Registration Closes</div>
+      <div class="date">10 Oct 2026</div>
+    </div>
+    <div class="deadline-cell">
       <div class="label">SERI-BEST 2026 Meet</div>
       <div class="date">04 Nov 2026</div>
     </div>
-    <a class="deadline-cell" href="https://github.com/Sericulture-AI/Sericulture-In-India/blob/main/byproduct_meet.pdf" target="_blank" rel="noopener">
+    <a class="deadline-cell" href="https://cdn.jsdelivr.net/gh/Sericulture-AI/Sericulture-In-India@main/byproduct_meet.pdf" target="_blank" rel="noopener">
       <div class="label">Event Brochure</div>
       <div class="date">View PDF</div>
     </a>
@@ -483,6 +488,15 @@
   const hiddenFrame = document.getElementById('hidden_iframe');
   let awaitingResponse = false;
 
+  // ---- Auto-close registration after 10 October 2026 (end of day, IST) ----
+  const REGISTRATION_CUTOFF = new Date('2026-10-10T23:59:59+05:30');
+  if (new Date() > REGISTRATION_CUTOFF) {
+    btn.disabled = true;
+    btn.textContent = 'Registration Closed';
+    statusMsg.className = 'status-msg err';
+    statusMsg.textContent = 'Registration closed on 10 October 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
+  }
+
   if (SUBMIT_URL.indexOf('PASTE_YOUR') !== 0) {
     form.action = SUBMIT_URL;
     form.target = 'hidden_iframe';
@@ -492,6 +506,13 @@
   form.addEventListener('submit', function(e){
     statusMsg.className = 'status-msg';
     statusMsg.textContent = '';
+
+    if (new Date() > REGISTRATION_CUTOFF) {
+      e.preventDefault();
+      statusMsg.className = 'status-msg err';
+      statusMsg.textContent = 'Registration closed on 10 October 2026. For queries, contact cmerti@rediffmail.com or +91-3762305900.';
+      return;
+    }
 
     if (SUBMIT_URL.indexOf('PASTE_YOUR') === 0) {
       e.preventDefault();
